@@ -13,7 +13,7 @@ DEVICE="$1"
 SYNC="$2"
 CLEAN="$3"
 CCACHE="$4"
-JOBS="$(($(nproc --all)-4))"
+JOBS="$(($(nproc --all)-2))"
 
 function exports() {
    export CUSTOM_BUILD_TYPE=OFFICIAL
@@ -25,7 +25,7 @@ function sync() {
    git config --global user.name "SahilSonar"
    git config --global user.email "sss.sonar2003@gmail.com"
    echo "Syncing Source, will take Little Time."
-   repo init --depth=1 -u git://github.com/CesiumOS/manifest.git -b ten
+   repo init --depth=1 -u git://github.com/CesiumOS-org/manifest.git -b ten
    repo sync -c -j"$JOBS" --no-tags --no-clone-bundle
    echo "Source Synced Successfully"
 }
@@ -58,8 +58,8 @@ function build_main() {
 
 function build_end() {
   # It's upload time!
-      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip bunnyy@frs.sourceforge.net:/home/frs/project/cesiumos/"$DEVICE"/
-      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip.json bunnyy@frs.sourceforge.net:/home/frs/project/cesiumos/"$DEVICE"/
+      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
+      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
 }
 
 exports
