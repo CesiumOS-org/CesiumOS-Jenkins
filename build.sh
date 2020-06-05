@@ -25,6 +25,7 @@ function sync() {
    git config --global user.name "SahilSonar"
    git config --global user.email "sss.sonar2003@gmail.com"
    echo "Syncing Source, will take Little Time."
+   rm -rf .repo/local_manifests
    repo init --depth=1 -u git://github.com/CesiumOS-org/manifest.git -b ten
    repo sync -c -j"$JOBS" --no-tags --no-clone-bundle
    echo "Source Synced Successfully"
@@ -45,7 +46,7 @@ function clean_up() {
       make clean && make clobber
    elif [ "$CLEAN" = "false" ]; then
       rm -rf out/target/product/*
-      echo "OUT dir from your repo deleted"
+      echo "Cleaning done! Ready for a sweet clean build :)"
     fi
 }
 
