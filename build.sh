@@ -69,6 +69,7 @@ function build_end() {
   # It's upload time!
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
+      cat out/target/product/"$DEVICE"/CesiumOS*.zip.json
 }
 
 exports
