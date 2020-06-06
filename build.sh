@@ -32,7 +32,7 @@ function sync() {
 }
 
 function track_private() {
-   rm -rf packages/app/Settings
+   rm -rf packages/apps/Settings
    rm -rf vendor/cesiumstyle
    git clone git@github.com:CesiumOS-org/android_packages_apps_Settings.git packages/apps/Settings
    git clone git@github.com:CesiumOS-org/android_vendor_cesiumstyle.git vendor/cesiumstyle
