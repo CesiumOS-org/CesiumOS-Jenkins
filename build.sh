@@ -36,7 +36,7 @@ function sync() {
    rm -rf .repo/local_manifests
    repo init --depth=1 -u git://github.com/CesiumOS-org/manifest.git -b ten
    repo sync -c -j"$JOBS" --no-tags --no-clone-bundle --force-sync
-   echo -e ${cya} "[*] Syncing completed!" ${txtrst}
+   echo -e ${cya} "[*] Syncing sources completed!" ${txtrst}
 }
 
 function signing_keys() {
@@ -64,7 +64,7 @@ function use_ccache() {
       echo -e ${blu} "[*] Yumm! ccache enabled!" ${txtrst}
    elif [ "$CCACHE" = "false" ]; then
       ccache -C
-      echo -e ${grn} "[*] CCACHE is cleaned!" ${txtrst}
+      echo -e ${grn} "[*] Ugh! ccache cleaned!" ${txtrst}
    fi
 }
 
@@ -73,11 +73,11 @@ function clean_up() {
    if [ "$CLEAN" = "true" ]; then
       echo -e ${blu}"[*] Running clean job - full" ${txtrst}
       make clean && make clobber
-      echo -e ${grn}"[*] clean job complete" ${txtrst}
+      echo -e ${grn}"[*] Clean job completed!" ${txtrst}
    elif [ "$CLEAN" = "false" ]; then
        echo -e ${blu}"[*] Running clean job - install" ${txtrst}
        make installclean
-       echo -e ${cya}"[*] make installclean complete" ${txtrst}
+       echo -e ${cya}"[*] make installclean completed!" ${txtrst}
 
     fi
 }
