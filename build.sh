@@ -61,7 +61,7 @@ function use_ccache() {
       ccache -M 150G
       export CCACHE_EXEC=$(which ccache)
       export USE_CCACHE=1
-      echo -e ${blue} "[*] Yumm! ccache enabled!" ${txtrst}
+      echo -e ${blu} "[*] Yumm! ccache enabled!" ${txtrst}
    elif [ "$CCACHE" = "false" ]; then
       ccache -C
       echo -e ${grn} "[*] CCACHE is cleaned!" ${txtrst}
@@ -96,6 +96,9 @@ function build_end() {
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
       cat out/target/product/"$DEVICE"/CesiumOS*.zip.json
+      echo -e ${cyn}"[*] Cleaning up certs..." ${txtrst}
+      rm -rf .certs
+      echo -e ${grn}"[*] Removed the certs sucessfully!..." ${txtrst}
 }
 
 exports
