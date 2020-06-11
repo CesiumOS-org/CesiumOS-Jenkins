@@ -40,17 +40,19 @@ function sync() {
 }
 
 function signing_keys() {
-   echo -e ${blu} "[*] Importing certs!" ${txtrst}
+   echo -e ${blu} "[*] Importing certs..." ${txtrst}
    git clone git@github.com:CesiumOS-org/test-keys.git .certs
    export SIGNING_KEYS=.certs
+   echo -e ${grn} "[*] Imported certs sucessfully!" ${txtrst}
 }
 
 function track_private() {
+   echo -e ${blu} "[*] Fetching private repos..." ${txtrst}
    rm -rf packages/apps/Settings
    rm -rf vendor/cesiumstyle
    git clone git@github.com:CesiumOS-org/android_packages_apps_Settings.git packages/apps/Settings
    git clone git@github.com:CesiumOS-org/android_vendor_cesiumstyle.git vendor/cesiumstyle
-   echo -e ${cya} "[*] Tracked private repos successfully!" ${txtrst}
+   echo -e ${cya} "[*] Fetched private repos successfully!" ${txtrst}
 }
 
 function use_ccache() {
@@ -59,7 +61,7 @@ function use_ccache() {
       ccache -M 150G
       export CCACHE_EXEC=$(which ccache)
       export USE_CCACHE=1
-      echo -e ${blue} "[*] Yee! ccache enabled!" ${txtrst}
+      echo -e ${blue} "[*] Yumm! ccache enabled!" ${txtrst}
    elif [ "$CCACHE" = "false" ]; then
       ccache -C
       echo -e ${grn} "[*] CCACHE is cleaned!" ${txtrst}
@@ -90,6 +92,7 @@ function build_main() {
 
 function build_end() {
   # It's upload time!
+      echo -e ${blu}"[*] Uploading the build & json..." ${txtrst}
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
       cat out/target/product/"$DEVICE"/CesiumOS*.zip.json
