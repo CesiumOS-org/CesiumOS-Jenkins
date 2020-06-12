@@ -99,6 +99,9 @@ function build_end() {
       echo -e ${cyn}"[*] Cleaning up certs..." ${txtrst}
       rm -rf .certs
       echo -e ${grn}"[*] Removed the certs sucessfully!..." ${txtrst}
+      echo -e ${blu}"[*] Removing private repos..." ${txtrst}
+      rm -rf packages/apps/Settings && rm -rf vendor/cesiumstyle
+      echo -e ${blu}"[*] Removed private repos!" ${txtrst}
 }
 
 exports
