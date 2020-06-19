@@ -58,50 +58,50 @@ function track_private() {
 function use_ccache() {
     # CCACHE UMMM!!! Cooks my builds fast
    if [ "$CCACHE" = "true" ]; then
-      ccache -M 150G
-      export CCACHE_EXEC=$(which ccache)
-      export USE_CCACHE=1
-      echo -e ${blu} "[*] Yumm! ccache enabled!" ${txtrst}
+    #  ccache -M 150G
+    #  export CCACHE_EXEC=$(which ccache)
+    #  export USE_CCACHE=1
+   echo -e ${blu} "[*] Yumm! ccache enabled!" ${txtrst}
    elif [ "$CCACHE" = "false" ]; then
       ccache -C
-      echo -e ${grn} "[*] Ugh! ccache cleaned!" ${txtrst}
+   echo -e ${grn} "[*] Ugh! ccache cleaned!" ${txtrst}
    fi
 }
 
 function clean_up() {
   # It's Clean Time
    if [ "$CLEAN" = "true" ]; then
-      echo -e ${blu}"[*] Running clean job - full" ${txtrst}
+   echo -e ${blu}"[*] Running clean job - full" ${txtrst}
       make clean && make clobber
-      echo -e ${grn}"[*] Clean job completed!" ${txtrst}
+   echo -e ${grn}"[*] Clean job completed!" ${txtrst}
    elif [ "$CLEAN" = "false" ]; then
-       echo -e ${blu}"[*] Running clean job - install" ${txtrst}
+   echo -e ${blu}"[*] Running clean job - install" ${txtrst}
        make installclean
-       echo -e ${cya}"[*] make installclean completed!" ${txtrst}
+   echo -e ${cya}"[*] make installclean completed!" ${txtrst}
 
     fi
 }
 
 function build_main() {
   # It's build time! YASS
-    source build/envsetup.sh
-    echo -e ${blu}"[*] Starting the build..." ${txtrst}
-    lunch cesium_${DEVICE}-userdebug
-    mka bacon -j"$JOBS"
+   source build/envsetup.sh
+   echo -e ${blu}"[*] Starting the build..." ${txtrst}
+   lunch cesium_${DEVICE}-userdebug
+   mka bacon -j"$JOBS"
 }
 
 function build_end() {
   # It's upload time!
-      echo -e ${blu}"[*] Uploading the build & json..." ${txtrst}
+   echo -e ${blu}"[*] Uploading the build & json..." ${txtrst}
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
       cat out/target/product/"$DEVICE"/CesiumOS*.zip.json
-      echo -e ${cyn}"[*] Cleaning up certs..." ${txtrst}
+   echo -e ${cyn}"[*] Cleaning up certs..." ${txtrst}
       rm -rf .certs
-      echo -e ${grn}"[*] Removed the certs sucessfully!..." ${txtrst}
-      echo -e ${blu}"[*] Removing private repos..." ${txtrst}
+   echo -e ${grn}"[*] Removed the certs sucessfully!..." ${txtrst}
+   echo -e ${blu}"[*] Removing private repos..." ${txtrst}
       rm -rf packages/apps/Settings && rm -rf vendor/cesiumstyle
-      echo -e ${blu}"[*] Removed private repos!" ${txtrst}
+   echo -e ${blu}"[*] Removed private repos!" ${txtrst}
 }
 
 exports
