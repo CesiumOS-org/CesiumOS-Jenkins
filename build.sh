@@ -58,11 +58,13 @@ function track_private() {
 function use_ccache() {
     # CCACHE UMMM!!! Cooks my builds fast
    if [ "$CCACHE" = "true" ]; then
-    #  ccache -M 150G
-    #  export CCACHE_EXEC=$(which ccache)
-    #  export USE_CCACHE=1
+      export CCACHE_DIR=/mnt/NEW-FILES/workspace/jenkins-ccache
+      ccache -M 75G
+      export CCACHE_EXEC=$(which ccache)
+      export USE_CCACHE=1
    echo -e ${blu} "[*] Yumm! ccache enabled!" ${txtrst}
    elif [ "$CCACHE" = "false" ]; then
+      export CCACHE_DIR=/mnt/NEW-FILES/workspace/jenkins-ccache
       ccache -C
    echo -e ${grn} "[*] Ugh! ccache cleaned!" ${txtrst}
    fi
