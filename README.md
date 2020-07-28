@@ -1,9 +1,16 @@
-## An easy to use Jenkins script designed specially for CesiumOS :) 
+### CesiumOS's automated Jenkins script!
 
-## How to use it? Well it's easy you will have to pass some arugments from Jenkins script setup 
+#### How does it work? It needs 5 arugments to be passed the the {console|user} to work. The example is mentioned below:
 
-### Ex: 
+#### Ex: 
 
 ``` bash build.sh begonia OFFICIAL true true true ```
 
-## Easy? Yep! 
+#### What does these arugments represent ?
+begonia -> device codename <br />
+OFFICIAL -> build type {OFFICIAL|BETA} are the possible args <br />
+true -> Whether to sync the source code or not. {true|false} are the possible args <br />
+true -> Whether to perform a clean build or not. {true|false} are the possible args <br />
+true -> Whether to use ccache while building or not. {true|false} are the possible args <br />
+
+#### That's all thank you for reading! 
