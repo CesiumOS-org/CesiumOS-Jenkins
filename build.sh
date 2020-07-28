@@ -10,9 +10,10 @@
 
 # Global variables
 DEVICE="$1"
-SYNC="$2"
-CLEAN="$3"
-CCACHE="$4"
+BUILD_TYPE="$2"
+SYNC="$3"
+CLEAN="$4"
+CCACHE="$5"
 JOBS="$(($(nproc --all)-2))"
 
 # Colors makes things beautiful
@@ -24,7 +25,7 @@ cya=$(tput setaf 6)             #  cyan
 txtrst=$(tput sgr0)             #  Reset
 
 function exports() {
-   export CUSTOM_BUILD_TYPE=OFFICIAL
+   export CUSTOM_BUILD_TYPE=${BUILD_TYPE}
    export KBUILD_BUILD_HOST="NexusPenguin"
 }
 
@@ -95,8 +96,13 @@ function build_main() {
 function build_end() {
   # It's upload time!
    echo -e ${blu}"[*] Uploading the build & json..." ${txtrst}
+   if [ "${BUILD_TYPE}" = "OFFICIAL" ]; then
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
+   elif [ "${BUILD_TYPE}" = "BETA" ]; then
+      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/beta/"$DEVICE"/
+      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/beta/"$DEVICE"/
+   fi
       cat out/target/product/"$DEVICE"/CesiumOS*.zip.json
    echo -e ${cyn}"[*] Cleaning up certs..." ${txtrst}
       rm -rf .certs

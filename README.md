@@ -4,6 +4,6 @@
 
 ### Ex: 
 
-``` bash build.sh begonia true true true ```
+``` bash build.sh begonia OFFICIAL true true true ```
 
 ## Easy? Yep! 
