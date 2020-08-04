@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (C) 2020 CesiumOS project.
+# Copyright (C) 2020 The CesiumOS project.
 #
 # Licensed under the General Public License.
 # This program is free software; you can redistribute it and/or modify
@@ -89,7 +89,11 @@ function build_main() {
   # It's build time! YASS
    source build/envsetup.sh
    echo -e ${blu}"[*] Starting the build..." ${txtrst}
-   lunch cesium_${DEVICE}-userdebug
+   if [ "${BUILD_TYPE}" = "OFFICIAL" ]; then
+      lunch cesium_${DEVICE}-userdebug
+   elif [ "${BUILD_TYPE}" = "BETA" ]; then
+      lunch cesium_${DEVICE}-eng
+   fi
    mka bacon -j"$JOBS"
 }
 
@@ -97,11 +101,11 @@ function build_end() {
   # It's upload time!
    echo -e ${blu}"[*] Uploading the build & json..." ${txtrst}
    if [ "${BUILD_TYPE}" = "OFFICIAL" ]; then
-      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
-      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
+      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*OFFICIAL*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
+      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*OFFICIAL*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
    elif [ "${BUILD_TYPE}" = "BETA" ]; then
-      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/beta/"$DEVICE"/
-      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/beta/"$DEVICE"/
+      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*BETA*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/beta/"$DEVICE"/
+      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*BETA*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/beta/"$DEVICE"/
    fi
       cat out/target/product/"$DEVICE"/CesiumOS*.zip.json
    echo -e ${cyn}"[*] Cleaning up certs..." ${txtrst}
