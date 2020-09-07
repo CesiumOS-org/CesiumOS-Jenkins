@@ -51,8 +51,8 @@ function track_private() {
    echo -e ${blu} "[*] Fetching private repos..." ${txtrst}
    rm -rf packages/apps/Settings
    rm -rf vendor/cesiumstyle
-   git clone git@github.com:CesiumOS-org/android_packages_apps_Settings.git packages/apps/Settings
-   git clone git@github.com:CesiumOS-org/android_vendor_cesiumstyle.git vendor/cesiumstyle
+   git clone git@github.com:CesiumOS-org/android_packages_apps_Settings.git packages/apps/Settings --depth="1"
+   git clone git@github.com:CesiumOS-org/android_vendor_cesiumstyle.git vendor/cesiumstyle --depth="1"
    echo -e ${cya} "[*] Fetched private repos successfully!" ${txtrst}
 }
 
