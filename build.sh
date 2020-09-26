@@ -35,7 +35,7 @@ function sync() {
    git config --global user.email "sss.sonar2003@gmail.com"
    echo -e ${blu} "[*] Syncing sources... This will take a while" ${txtrst}
    rm -rf .repo/local_manifests
-   repo init --depth=1 -u git://github.com/CesiumOS-org/manifest.git -b ten
+   repo init --depth=1 -u git://github.com/CesiumOS-org/manifest.git -b eleven
    repo sync -c -j"$JOBS" --no-tags --no-clone-bundle --force-sync
    echo -e ${cya} "[*] Syncing sources completed!" ${txtrst}
 }
@@ -52,7 +52,7 @@ function track_private() {
    rm -rf packages/apps/Settings
    rm -rf vendor/cesiumstyle
    git clone git@github.com:CesiumOS-org/android_packages_apps_Settings.git packages/apps/Settings --depth="1"
-   git clone git@github.com:CesiumOS-org/android_vendor_cesiumstyle.git vendor/cesiumstyle --depth="1"
+   git clone git@github.com:CesiumOS-org/android_vendor/cesium-prebuilts.git vendor/cesium-prebuilts --depth="1"
    echo -e ${cya} "[*] Fetched private repos successfully!" ${txtrst}
 }
 
