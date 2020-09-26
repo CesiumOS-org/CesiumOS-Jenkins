@@ -101,11 +101,11 @@ function build_end() {
   # It's upload time!
    echo -e ${blu}"[*] Uploading the build & json..." ${txtrst}
    if [ "${BUILD_TYPE}" = "OFFICIAL" ]; then
-      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*OFFICIAL*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
-      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*OFFICIAL*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
+      cp -p out/target/product/"$DEVICE"/CesiumOS*OFFICIAL*.zip /home/sahil/onedrive/"$DEVICE"/
+      cp -p out/target/product/"$DEVICE"/CesiumOS*OFFICIAL*.zip.json /home/sahil/onedrive/"$DEVICE"/
    elif [ "${BUILD_TYPE}" = "BETA" ]; then
-      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*BETA*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/beta/"$DEVICE"/
-      rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*BETA*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/beta/"$DEVICE"/
+      cp -p out/target/product/"$DEVICE"/CesiumOS*BETA*.zip /home/sahil/onedrive/beta/"$DEVICE"/
+      cp -p out/target/product/"$DEVICE"/CesiumOS*BETA*.zip.json /home/sahil/onedrive/beta/"$DEVICE"/
    fi
       cat out/target/product/"$DEVICE"/CesiumOS*.zip.json
    echo -e ${cyn}"[*] Cleaning up certs..." ${txtrst}
