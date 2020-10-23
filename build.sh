@@ -50,7 +50,7 @@ function signing_keys() {
 function track_private() {
    echo -e ${blu} "[*] Fetching private repos..." ${txtrst}
    rm -rf packages/apps/Settings
-   rm -rf vendor/cesiumstyle
+   rm -rf vendor/cesium-prebuilts
    git clone git@github.com:CesiumOS-org/android_packages_apps_Settings.git packages/apps/Settings --depth="1"
    git clone git@github.com:CesiumOS-org/android_vendor_cesium-prebuilts.git vendor/cesium-prebuilts --depth="1"
    echo -e ${cya} "[*] Fetched private repos successfully!" ${txtrst}
@@ -73,6 +73,7 @@ function use_ccache() {
 
 function clean_up() {
   # It's Clean Time
+   source build/envsetup.sh
    if [ "$CLEAN" = "true" ]; then
    echo -e ${blu}"[*] Running clean job - full" ${txtrst}
       make clean && make clobber
@@ -112,7 +113,7 @@ function build_end() {
       rm -rf .certs
    echo -e ${grn}"[*] Removed the certs sucessfully!..." ${txtrst}
    echo -e ${blu}"[*] Removing private repos..." ${txtrst}
-      rm -rf packages/apps/Settings && rm -rf vendor/cesiumstyle
+      rm -rf packages/apps/Settings && rm -rf vendor/cesium-prebuilts
    echo -e ${blu}"[*] Removed private repos!" ${txtrst}
 }
 
