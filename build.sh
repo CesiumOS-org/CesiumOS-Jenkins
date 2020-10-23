@@ -52,20 +52,20 @@ function track_private() {
    rm -rf packages/apps/Settings
    rm -rf vendor/cesiumstyle
    git clone git@github.com:CesiumOS-org/android_packages_apps_Settings.git packages/apps/Settings --depth="1"
-   git clone git@github.com:CesiumOS-org/android_vendor/cesium-prebuilts.git vendor/cesium-prebuilts --depth="1"
+   git clone git@github.com:CesiumOS-org/android_vendor_cesium-prebuilts.git vendor/cesium-prebuilts --depth="1"
    echo -e ${cya} "[*] Fetched private repos successfully!" ${txtrst}
 }
 
 function use_ccache() {
     # CCACHE UMMM!!! Cooks my builds fast
    if [ "$CCACHE" = "true" ]; then
-      export CCACHE_DIR=/mnt/NEW-FILES/workspace/jenkins-ccache
+      export CCACHE_DIR=/mnt/sources/workspace/jenkins-ccache
       ccache -M 75G
       export CCACHE_EXEC=$(which ccache)
       export USE_CCACHE=1
    echo -e ${blu} "[*] Yumm! ccache enabled!" ${txtrst}
    elif [ "$CCACHE" = "false" ]; then
-      export CCACHE_DIR=/mnt/NEW-FILES/workspace/jenkins-ccache
+      export CCACHE_DIR=/mnt/sources/jenkins-ccache
       ccache -C
    echo -e ${grn} "[*] Ugh! ccache cleaned!" ${txtrst}
    fi
