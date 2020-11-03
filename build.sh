@@ -11,9 +11,10 @@
 # Global variables
 DEVICE="$1"
 BUILD_TYPE="$2"
-SYNC="$3"
-CLEAN="$4"
-CCACHE="$5"
+BUILD_DEBUG="$3"
+SYNC="$4"
+CLEAN="$5"
+CCACHE="$6"
 JOBS="$(($(nproc --all)-2))"
 
 # Colors makes things beautiful
@@ -90,11 +91,7 @@ function build_main() {
   # It's build time! YASS
    source build/envsetup.sh
    echo -e ${blu}"[*] Starting the build..." ${txtrst}
-   if [ "${BUILD_TYPE}" = "OFFICIAL" ]; then
-      lunch cesium_${DEVICE}-userdebug
-   elif [ "${BUILD_TYPE}" = "BETA" ]; then
-      lunch cesium_${DEVICE}-eng
-   fi
+      lunch cesium_${DEVICE}-${BUILD_DEBUG}
    mka bacon -j"$JOBS"
 }
 
