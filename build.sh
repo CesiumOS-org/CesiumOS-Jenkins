@@ -91,8 +91,14 @@ function build_main() {
   # It's build time! YASS
    source build/envsetup.sh
    echo -e ${blu}"[*] Starting the build..." ${txtrst}
-      lunch cesium_${DEVICE}-${BUILD_DEBUG}
+   lunch cesium_${DEVICE}-${BUILD_DEBUG}
    mka bacon -j"$JOBS"
+   if [ $? -eq 0 ]; then
+      echo -e ${grn}"[*] Build was successful!" ${txtrst}
+   else
+      echo -e ${red}"[!] Could not build some targets, exiting.." ${txtrst}
+      exit 1
+   fi
 }
 
 function build_end() {
