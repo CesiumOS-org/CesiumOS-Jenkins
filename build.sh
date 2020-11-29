@@ -81,6 +81,7 @@ function clean_up() {
    echo -e ${grn}"[*] Clean job completed!" ${txtrst}
    elif [ "$CLEAN" = "false" ]; then
    echo -e ${blu}"[*] Running clean job - install" ${txtrst}
+       lunch cesium_${DEVICE}-${BUILD_DEBUG}
        make installclean
    echo -e ${cya}"[*] make installclean completed!" ${txtrst}
 
