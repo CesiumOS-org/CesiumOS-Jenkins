@@ -60,7 +60,7 @@ function track_private() {
 function use_ccache() {
     # CCACHE UMMM!!! Cooks my builds fast
    if [ "$CCACHE" = "true" ]; then
-      export CCACHE_DIR=/mnt/ccache
+      export CCACHE_DIR=/mnt/ccache3
       ccache -M 80G
       export CCACHE_EXEC=$(which ccache)
       export USE_CCACHE=1
