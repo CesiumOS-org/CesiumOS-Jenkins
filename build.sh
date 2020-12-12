@@ -84,7 +84,9 @@ function clean_up() {
        lunch cesium_${DEVICE}-${BUILD_DEBUG}
        make installclean
    echo -e ${cya}"[*] make installclean completed!" ${txtrst}
-
+   else 
+     # Don't do anything
+    echo -e ${cya}"[*] Doing dirty build kk" ${txtrst}
     fi
 }
 

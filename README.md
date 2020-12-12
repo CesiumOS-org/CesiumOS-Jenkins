@@ -11,7 +11,7 @@ begonia -> device codename <br />
 OFFICIAL -> build type {OFFICIAL|BETA} are the possible args <br />
 userdebug -> build debug type {eng, userdebug, user} are the possible args <br />
 true -> Whether to sync the source code or not. {true|false} are the possible args <br />
-true -> Whether to perform a clean build or not. {true|false} are the possible args <br />
+true -> Whether to perform a clean build or not. {true|false|nothing} are the possible args <br />
 true -> Whether to use ccache while building or not. {true|false} are the possible args <br />
 
 #### That's all thank you for reading! 
