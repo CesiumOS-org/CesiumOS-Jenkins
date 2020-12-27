@@ -25,7 +25,14 @@ blu=$(tput setaf 4)             #  blue
 cya=$(tput setaf 6)             #  cyan
 txtrst=$(tput sgr0)             #  Reset
 
+sendMessage() {
+    MESSAGE=$1
+    curl -s "https://api.telegram.org/bot${BOT_API_KEY}/sendmessage" --data "text=$MESSAGE&chat_id=-1001261572458" 1>/dev/null
+    echo -e
+}
+
 function exports() {
+   sendMessage "Build triggered on Jenkins for ${DEVICE}"
    export CUSTOM_BUILD_TYPE=${BUILD_TYPE}
    export KBUILD_BUILD_HOST="NexusPenguin"
 }
@@ -35,6 +42,7 @@ function sync() {
    git config --global user.name "SahilSonar"
    git config --global user.email "sss.sonar2003@gmail.com"
    echo -e ${blu} "[*] Syncing sources... This will take a while" ${txtrst}
+   sendMessage "Starting repo sync. Executing command: repo sync"
    rm -rf .repo/local_manifests
    repo init --depth=1 -u git://github.com/CesiumOS-org/manifest.git -b eleven
    repo sync -c -j"$JOBS" --no-tags --no-clone-bundle --force-sync
@@ -84,7 +92,7 @@ function clean_up() {
        lunch cesium_${DEVICE}-${BUILD_DEBUG}
        make installclean
    echo -e ${cya}"[*] make installclean completed!" ${txtrst}
-   else 
+   else
      # Don't do anything
     echo -e ${cya}"[*] Doing dirty build kk" ${txtrst}
     fi
@@ -94,25 +102,33 @@ function build_main() {
   # It's build time! YASS
    source build/envsetup.sh
    echo -e ${blu}"[*] Starting the build..." ${txtrst}
+   sendMessage "Starting ${DEVICE}-${BUILD_TYPE} build, check progress here ${BUILD_URL}"
    lunch cesium_${DEVICE}-${BUILD_DEBUG}
    mka bacon -j"$JOBS"
    if [ $? -eq 0 ]; then
       echo -e ${grn}"[*] Build was successful!" ${txtrst}
+      sendMessage "${DEVICE} build is done, check jenkins (${BUILD_URL}) for details!"
    else
       echo -e ${red}"[!] Could not build some targets, exiting.." ${txtrst}
+      sendMessage "${DEVICE} build is failed, check jenkins (${BUILD_URL}) for details!"
       exit 1
    fi
 }
 
 function build_end() {
   # It's upload time!
+   sendMessage "Uploading ${DEVICE} build"
    echo -e ${blu}"[*] Uploading the build & json..." ${txtrst}
    if [ "${BUILD_TYPE}" = "OFFICIAL" ]; then
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*OFFICIAL*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*OFFICIAL*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/"$DEVICE"/
+      sendMessage "Build done, download and test fast"
+      sendMessage "https://sf.net/projects/cesiumos-org/files/${DEVICE}"
    elif [ "${BUILD_TYPE}" = "BETA" ]; then
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*BETA*.zip sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/beta/"$DEVICE"/
       rsync -azP  -e ssh out/target/product/"$DEVICE"/CesiumOS*BETA*.zip.json sahilsonar2003@frs.sourceforge.net:/home/frs/project/cesiumos-org/beta/"$DEVICE"/
+      sendMessage "Build done, download and test fast"
+      sendMessage "https://sf.net/projects/cesiumos-org/files/beta/${DEVICE}"
    fi
       cat out/target/product/"$DEVICE"/CesiumOS*.zip.json
    echo -e ${cyn}"[*] Cleaning up certs..." ${txtrst}
@@ -126,8 +142,8 @@ function build_end() {
 exports
 if [ "$SYNC" = "true" ]; then
     sync
-    track_private
 fi
+track_private
 signing_keys
 use_ccache
 clean_up
