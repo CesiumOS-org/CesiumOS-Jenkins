@@ -15,6 +15,7 @@ BUILD_DEBUG="$3"
 SYNC="$4"
 CLEAN="$5"
 CCACHE="$6"
+CCACHE_PATH="$7"
 
 # Colors makes things beautiful
 export TERM=xterm
@@ -23,6 +24,12 @@ grn=$(tput setaf 2)             #  green
 blu=$(tput setaf 4)             #  blue
 cya=$(tput setaf 6)             #  cyan
 txtrst=$(tput sgr0)             #  Reset
+
+if [ ! -f ~/.ssh/config ]; then
+  mkdir -p ~/.ssh && echo "Host *" > ~/.ssh/config && \
+  	echo " StrictHostKeyChecking no" >> ~/.ssh/config;
+  chmod 400 ~/.ssh/config    
+fi
 
 sendMessage() {
     MESSAGE=$1
@@ -57,13 +64,13 @@ function signing_keys() {
 function use_ccache() {
     # CCACHE UMMM!!! Cooks my builds fast
    if [ "$CCACHE" = "true" ]; then
-      export CCACHE_DIR=/home/sahil/jenkins-ccache
+      export CCACHE_DIR=${CCACHE_PATH}
       ccache -M 200G
       export CCACHE_EXEC=$(which ccache)
       export USE_CCACHE=1
    echo -e ${blu} "[*] Yumm! ccache enabled!" ${txtrst}
    elif [ "$CCACHE" = "false" ]; then
-      export CCACHE_DIR=/home/sahil/jenkins-ccache
+      export CCACHE_DIR=${CCACHE_PATH}
       ccache -C
    echo -e ${grn} "[*] Ugh! ccache cleaned!" ${txtrst}
    fi
