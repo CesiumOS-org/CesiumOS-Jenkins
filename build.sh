@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (C) 2020 The CesiumOS project.
+# Copyright (C) 2020-2021 The CesiumOS project.
 #
 # Licensed under the General Public License.
 # This program is free software; you can redistribute it and/or modify
@@ -15,7 +15,6 @@ BUILD_DEBUG="$3"
 SYNC="$4"
 CLEAN="$5"
 CCACHE="$6"
-JOBS="$(($(nproc --all)-2))"
 
 # Colors makes things beautiful
 export TERM=xterm
@@ -34,7 +33,6 @@ sendMessage() {
 function exports() {
    sendMessage "Build triggered on Jenkins for ${DEVICE}"
    export CUSTOM_BUILD_TYPE=${BUILD_TYPE}
-   export KBUILD_BUILD_HOST="NexusPenguin"
 }
 
 function sync() {
@@ -45,7 +43,7 @@ function sync() {
    sendMessage "Starting repo sync. Executing command: repo sync"
    rm -rf .repo/local_manifests
    repo init --depth=1 -u git://github.com/CesiumOS-org/manifest.git -b eleven
-   repo sync -c -j"$JOBS" --no-tags --no-clone-bundle --force-sync
+   repo sync -c -j$(nproc --all) --no-tags --no-clone-bundle --force-sync
    echo -e ${cya} "[*] Syncing sources completed!" ${txtrst}
 }
 
@@ -56,25 +54,16 @@ function signing_keys() {
    echo -e ${grn} "[*] Imported certs sucessfully!" ${txtrst}
 }
 
-function track_private() {
-   echo -e ${blu} "[*] Fetching private repos..." ${txtrst}
-   rm -rf packages/apps/Settings
-   rm -rf vendor/cesium-prebuilts
-   git clone git@github.com:CesiumOS-org/android_packages_apps_Settings.git packages/apps/Settings --depth="1"
-   git clone git@github.com:CesiumOS-org/android_vendor_cesium-prebuilts.git vendor/cesium-prebuilts --depth="1"
-   echo -e ${cya} "[*] Fetched private repos successfully!" ${txtrst}
-}
-
 function use_ccache() {
     # CCACHE UMMM!!! Cooks my builds fast
    if [ "$CCACHE" = "true" ]; then
-      export CCACHE_DIR=/mnt/ccache3
+      export CCACHE_DIR=/mnt/FILES/workspace/CesiumOS-ccache
       ccache -M 80G
       export CCACHE_EXEC=$(which ccache)
       export USE_CCACHE=1
    echo -e ${blu} "[*] Yumm! ccache enabled!" ${txtrst}
    elif [ "$CCACHE" = "false" ]; then
-      export CCACHE_DIR=/mnt/ccache
+      export CCACHE_DIR=/mnt/FILES/workspace/CesiumOS-ccache
       ccache -C
    echo -e ${grn} "[*] Ugh! ccache cleaned!" ${txtrst}
    fi
@@ -90,7 +79,7 @@ function clean_up() {
    elif [ "$CLEAN" = "false" ]; then
    echo -e ${blu}"[*] Running clean job - install" ${txtrst}
        lunch cesium_${DEVICE}-${BUILD_DEBUG}
-       make installclean
+       m installclean
    echo -e ${cya}"[*] make installclean completed!" ${txtrst}
    else
      # Don't do anything
@@ -104,7 +93,7 @@ function build_main() {
    echo -e ${blu}"[*] Starting the build..." ${txtrst}
    sendMessage "Starting ${DEVICE}-${BUILD_TYPE} build, check progress here ${BUILD_URL}"
    lunch cesium_${DEVICE}-${BUILD_DEBUG}
-   mka bacon -j"$JOBS"
+   m bacon
    if [ $? -eq 0 ]; then
       echo -e ${grn}"[*] Build was successful!" ${txtrst}
       sendMessage "${DEVICE} build is done, check jenkins (${BUILD_URL}) for details!"
@@ -134,16 +123,12 @@ function build_end() {
    echo -e ${cyn}"[*] Cleaning up certs..." ${txtrst}
       rm -rf .certs
    echo -e ${grn}"[*] Removed the certs sucessfully!..." ${txtrst}
-   echo -e ${blu}"[*] Removing private repos..." ${txtrst}
-      rm -rf packages/apps/Settings && rm -rf vendor/cesium-prebuilts
-   echo -e ${blu}"[*] Removed private repos!" ${txtrst}
 }
 
 exports
 if [ "$SYNC" = "true" ]; then
     sync
 fi
-track_private
 signing_keys
 use_ccache
 clean_up
