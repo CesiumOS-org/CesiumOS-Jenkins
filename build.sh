@@ -133,9 +133,7 @@ function build_end() {
 }
 
 exports
-if [ "$SYNC" = "true" ]; then
-    sync
-fi
+sync
 signing_keys
 use_ccache
 clean_up
