@@ -8,15 +8,6 @@
 #
 #
 
-# Global variables
-DEVICE="$1"
-BUILD_TYPE="$2"
-BUILD_DEBUG="$3"
-SYNC="$4"
-CLEAN="$5"
-CCACHE="$6"
-CCACHE_PATH="$7"
-
 # Colors makes things beautiful
 export TERM=xterm
 red=$(tput setaf 1)             #  red
