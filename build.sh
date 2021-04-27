@@ -57,13 +57,13 @@ function signing_keys() {
 function use_ccache() {
     # CCACHE UMMM!!! Cooks my builds fast
    if [ "$CCACHE" = "true" ]; then
-      export CCACHE_DIR=/mnt/FILES/workspace/CesiumOS-ccache
-      ccache -M 80G
+      export CCACHE_DIR=/home/sahil/jenkins-ccache
+      ccache -M 200G
       export CCACHE_EXEC=$(which ccache)
       export USE_CCACHE=1
    echo -e ${blu} "[*] Yumm! ccache enabled!" ${txtrst}
    elif [ "$CCACHE" = "false" ]; then
-      export CCACHE_DIR=/mnt/FILES/workspace/CesiumOS-ccache
+      export CCACHE_DIR=/home/sahil/jenkins-ccache
       ccache -C
    echo -e ${grn} "[*] Ugh! ccache cleaned!" ${txtrst}
    fi
